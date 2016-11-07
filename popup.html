@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset='UTF-8'>
+    <title></title>
+    <link rel='stylesheet' href='style.css'>
+</head>
+<body class='loading'>
+
+    <div class='page active' id='pageMain'>
+        <div class='mainWrap'>
+            <span class='btn active' id='btnAboutServer'>о сервере</span>
+            <span class='btn active' id='btnChangeDev'>на dev</span>
+            <span class='btn active' id='btnChangeBattle'>на бой</span>
+            <span class='btn' id='btnSave'>сохранить</span>
+            <span class='btn update' id='btnUpdate' title='проверить обновления'>!</span>
+            <span class='linkBlank' id='linkBlank'></span>
+            <div class='view' id='viewBlock' contenteditable></div>
+        </div>
+    </div>
+    <div class='modal' id='modalNodeJs'>
+        <div class='modalWrap'>
+            <div class='modalText'>Cервер NodeJS не доступен</div>
+            <span class='btn' id='btnTestNodeJs'>попробовать ещё раз</span>
+        </div>
+    </div>
+
+    <div class='modal' id='modalAbout'>
+        <div class='modalWrap'>
+            <span class='modalClose jsCloseModal'></span>
+            <div class='modalText jsMessage'></div>
+        </div>
+    </div>
+
+    <div class='labelStatus' id='labelStatus'>строка состояния</div>
+
+    <script src='scripts/script.js'></script>
+
+</body>
+</html>

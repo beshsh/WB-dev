@@ -1,0 +1,243 @@
+//цвета
+@purply: #793aa6;
+@purplyHard: #682896;
+@white: #fff;
+@pink: #ff48a5;
+@grey: #f3f3f3;
+@wildberry: #ff48a5;
+//////////цвета
+
+* {
+    outline: none;
+}
+
+body {
+    margin: 0;
+    height: 500px;
+    width: 400px;
+
+    &.loading {
+        background: url('images/loader.gif') center no-repeat;
+
+        * {
+            opacity: 0!important;
+        }
+    }
+}
+
+
+.page {
+    opacity: 0;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    transition: .5s opacity;
+    width: 100%;
+    z-index: -99;
+
+    &.active {
+        opacity: 1;
+        z-index: 1;
+    }
+}
+.mainWrap {
+    padding: 20px;
+    overflow: hidden;
+}
+
+.linkBlank {
+    font-size: 14px;
+    display: block;
+    margin: 0 0 5px;
+    height: 14px;
+    padding: 0 60px 0 0;
+    text-align: right;
+
+    a {
+        color: @wildberry;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}
+
+.view {
+    font-size: 12px;
+    height: 390px;
+    margin: 10px 0;
+    line-height: 12px;
+    position: relative;
+    white-space: pre;
+    width: 360px;
+
+    &.aboutServer {
+        white-space: normal;
+    }
+}
+.btn {
+    background: @purply;
+    cursor: default;
+    color: @white;
+    height: 16px;
+    line-height: 16px;
+    display: inline-block;
+    margin: 0 0 5px;
+    min-width: 10px;
+    padding: 10px 15px;
+    position: relative;
+    opacity: .3;
+    -webkit-user-select: none;
+    user-select: none;
+
+    &.active {
+        cursor: pointer;
+        opacity: 1;
+
+        &:active {
+            background: @purplyHard;
+        }
+    }
+    &.update {
+        color: transparent;
+
+        &:after {
+            border: 5px solid transparent;
+            border-left: 5px solid @white;
+            border-bottom-color: @purply;
+            content: '';
+            left: 23px;
+            position: absolute;
+            transform: rotate(30deg);
+            top: 11px;
+        }
+        &:before {
+            background: @purply;
+            border: 3px solid @white;
+            border-radius: 100%;
+            content: '';
+            height: 12px;
+            left: 10px;
+            position: absolute;
+            top: 10px;
+            width: 12px;
+        }
+    }
+}
+
+//модальник
+.modal {
+    opacity: 0;
+    height: 100%;
+    position: fixed;
+    transition: .4s opacity, 0s z-index .5s;
+    -webkit-user-select: none;
+    user-select: none;
+    width: 100%;
+    z-index: -99;
+
+    &.active {
+        transition: .4s opacity;
+        opacity: 1;
+        z-index: 10
+    }
+
+    &:before {
+        background: rgba(0, 0, 0, .8);
+        content: '';
+        height: 100%;
+        left: 0;
+        position: fixed;
+        top: 0;
+        width: 100%;
+    }
+    .modalWrap {
+        background: @white;
+        height: 90px;
+        left: 50%;
+        margin: -75px 0 0 -125px;
+        padding: 20px 30px;
+        position: absolute;
+        top: 50%;
+        width: 210px;
+    }
+    .modalClose {
+        cursor: pointer;
+        right: 15px;
+        height: 30px;
+        top: 15px;
+        position: absolute;
+        transform: rotate(45deg);
+        width: 30px;
+
+        &:after,
+        &:before {
+            background: @purply;
+            content: '';
+            position: absolute;
+        }
+        &:before {
+            height: 1px;
+            right: 4px;
+            top: 12px;
+            width: 21px;
+        }
+        &:after {
+            height: 21px;
+            right: 14px;
+            top: 2px;
+            width: 1px;
+        }
+    }
+    .modalText {
+        display: block;
+        margin: 0 0 20px;
+        max-height: 100%;
+        overflow: auto;
+    }
+    //ошибка nodejs
+    &#modalNodeJs .modalWrap {
+        text-align: center;
+    }
+    //////////ошибка nodejs
+    //о сервере
+    &#modalAbout .modalWrap {
+        background: @white;
+        height: 400px;
+        left: 50%;
+        margin: -220px 0 0 -155px;
+        padding: 20px 30px;
+        position: absolute;
+        top: 50%;
+        width: 250px;
+
+        .modalText > div {
+            margin: 0!important;
+            padding: 0!important;
+        }
+    }
+    //////////о сервере
+}
+//////////модальник
+
+//строка состояния
+.labelStatus {
+    font-size: 30px;
+    color: @purply;
+    bottom: 20px;
+    left: 0;
+    opacity: 0;
+    position: fixed;
+    text-transform: uppercase;
+    text-align: center;
+    transition: 1s opacity;
+    z-index: -99;
+    width: 100%;
+
+    &.active {
+        opacity: 1;
+        z-index: 5;
+    }
+}
+//////////строка состояния
