@@ -17,8 +17,7 @@ document.addEventListener('DOMContentLoaded', function(){
     xhr.onreadystatechange = function(){
         if (xhr.status == 200) {
             body.classList.remove('loading');
-            viewBlock.innerHTML = xhr.responseText;
-
+            viewBlock.innerText = xhr.responseText;
         } else {
             modalNodeJs.classList.add('active');
         }
@@ -36,9 +35,9 @@ btnAbout.addEventListener('click', function () {
         xhr.onreadystatechange = function(){
             modalAbout.classList.add('active');
             if (xhr.status != 200) {
-                modalAbout.getElementsByClassName('jsMessage')[0].innerHTML = "что-то пошло не так"
+                modalAbout.getElementsByClassName('jsMessage')[0].innerText = "что-то пошло не так"
             } else {
-                modalAbout.getElementsByClassName('jsMessage')[0].innerHTML = xhr.responseText;
+                modalAbout.getElementsByClassName('jsMessage')[0].innerText = xhr.responseText;
             }
         };
     });
@@ -123,7 +122,6 @@ function addComments(input) {
             output = output + '#';
         }
         if (input[i] == '\n') {
-            // console.log('input[i] = ' + input[i]);
             output = output + '\n#';
         } else {
             output = output + input[i];
@@ -136,7 +134,7 @@ function addComments(input) {
 function saveHosts(textMessage) {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', 'http://localhost:1945/save');
-    xhr.send(viewBlock.innerHTML);
+    xhr.send(viewBlock.innerText);
     xhr.onreadystatechange = function(){
         if (xhr.status == 200) {
             // chrome.browsingData.removeCache();
