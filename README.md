@@ -1,4 +1,4 @@
-плагин для верстальщиков и тестировщиков компании wildberries
+плагин браузера chrome для верстальщиков и тестировщиков компании wildberries
 
 быстрый запуск windows
 <ol>
@@ -12,6 +12,6 @@
         отрываем в косонле папку с расширением 
         <br/>(по умолчанию
             C:\Users\<ваш пользователь>\AppData\Local\Google\Chrome\User Data\Default\Extensions\ephenaienpdfchppeeefjgfoomooffid\<последняя версия разрешения>\scripts),
-        <br/>пишем <code>node server.js</code>
+        <br/>пишем <code>node start.js</code>
     </li>
 </ol>

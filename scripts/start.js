@@ -6,6 +6,7 @@ var config = {};
 
 //читаем настройки
 filesystem.readFile('../settings.json', function(err, dataRead){
+    console.log('чтение настроек');
     if (err) {
         response.write('error');
         response.end();
@@ -15,9 +16,11 @@ filesystem.readFile('../settings.json', function(err, dataRead){
             if (key == 'urlHosts') config.hostst = value;
         });
     }
+    console.log('расширение готово к использованию');
 });
 
 function onRequest(request, response) {
+
     switch (url.parse(request.url).pathname) {
         case '/chooseBattle':
             response.writeHead(200, {"Content-Type": "text/plain"});

@@ -7,7 +7,6 @@ var body = document.getElementsByTagName('body')[0],
     btnSave = document.getElementById('btnSave'),
     labelStatus = document.getElementById('labelStatus'),
     modalAbout = document.getElementById('modalAbout'),
-    btnUpdate = document.getElementById('btnUpdate'),
     linkBlank = document.getElementById('linkBlank');
 
 document.addEventListener('DOMContentLoaded', function(){
@@ -24,7 +23,6 @@ document.addEventListener('DOMContentLoaded', function(){
             modalNodeJs.classList.add('active');
         }
     };
-    //TODO проверка обновлений
 });
 
 //о текущем сервере
@@ -32,7 +30,6 @@ btnAbout.addEventListener('click', function () {
     chrome.tabs.query( {active: true} , function(tabs){
         var xhr = new XMLHttpRequest(),
             url = tabs[0].url;
-        //TODO lk., secure.   ;   надо сделать чтобы работало для Беларуси и Казахстана
         url = url.substring(0, url.indexOf('wildberries.ru')) + 'wildberries.ru' + '/_about';
         xhr.open('GET', url);
         xhr.send();
@@ -71,7 +68,6 @@ btnChangeBattle.addEventListener('click', function () {
 });
 
 //сохранить
-//TODO добавить ссылку
 btnSave.addEventListener('click', function () {
     if (btnSave.classList.contains('active')) {
         saveHosts('сохранено');
@@ -79,7 +75,6 @@ btnSave.addEventListener('click', function () {
 
         chrome.browsingData.removeCache({"since": 0}, function() {
             chrome.tabs.getSelected(function(tab){
-                //TODO надо чтобы подставлялю для боя https а для дева http иначе сброш кеша не помогает
                 linkBlank.innerHTML = '<a href="' + tab.url + '" target="_blank">перейти</a>'
             })
         });
