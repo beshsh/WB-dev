@@ -1,3 +1,6 @@
+var version = '1.2_0';
+var user = localStorage.getItem('setUser')
+
 var body = document.getElementsByTagName('body')[0],
     viewBlock = document.getElementById('viewBlock'),
     btnAbout = document.getElementById('btnAboutServer'),
@@ -7,21 +10,15 @@ var body = document.getElementsByTagName('body')[0],
     btnSave = document.getElementById('btnSave'),
     labelStatus = document.getElementById('labelStatus'),
     modalAbout = document.getElementById('modalAbout'),
-    linkBlank = document.getElementById('linkBlank');
+    linkBlank = document.getElementById('linkBlank'),
+    modalUser = document.getElementById('modalUser'),
+    labelSetPath = document.getElementById('labelSetPath'),
+    inputUser = document.getElementById('inputUser'),
+    btnSetUser = document.getElementById('btnSetUser'),
+    btnModalCopy = document.getElementById('btnModalCopy');
 
 document.addEventListener('DOMContentLoaded', function(){
-    //загружаем hosts
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://localhost:1945/downLoadSettings');
-    xhr.send();
-    xhr.onreadystatechange = function(){
-        if (xhr.status == 200) {
-            body.classList.remove('loading');
-            viewBlock.innerText = xhr.responseText;
-        } else {
-            modalNodeJs.classList.add('active');
-        }
-    };
+    testNodeJs();
 });
 
 //о текущем сервере
@@ -71,7 +68,6 @@ btnSave.addEventListener('click', function () {
     if (btnSave.classList.contains('active')) {
         saveHosts('сохранено');
         btnSave.classList.remove('active');
-
         chrome.browsingData.removeCache({"since": 0}, function() {
             chrome.tabs.getSelected(function(tab){
                 linkBlank.innerHTML = '<a href="' + tab.url + '" target="_blank">перейти</a>'
@@ -86,6 +82,38 @@ body.addEventListener('click', function (e) {
         e.target.parentNode.parentNode.classList.remove('active')
     }
 });
+
+//поле для юзера в модальнике ввода юзера
+inputUser.addEventListener('keyup', function () {
+    if (inputUser.value != '') {
+        btnSetUser.classList.add('active');
+    } else {
+        btnSetUser.classList.remove('active')
+    }
+});
+
+//установка имени пользователя
+btnSetUser.addEventListener('click', function () {
+   if (btnSetUser.classList.contains('active')) {
+       localStorage.setItem('setUser', user = inputUser.value);
+       modalUser.classList.remove('active');
+       testNodeJs();
+   }
+});
+
+//копировать в буфер
+btnModalCopy.addEventListener('click', function () {
+    if (btnModalCopy.classList.contains('active')) {
+        var range = document.createRange();
+        range.selectNodeContents(document.querySelector('.jsCopyText'));
+        window.getSelection().addRange(range);
+        document.execCommand('copy');
+        window.getSelection().removeAllRanges();
+        btnModalCopy.classList.remove('active');
+        btnModalCopy.innerText = 'скопировано';
+    }
+});
+
 
 //-------------------------------------------функции попёрли------------------------------------------
 
@@ -141,4 +169,22 @@ function saveHosts(textMessage) {
             changeStatus(textMessage)
         }
     };
+}
+
+function testNodeJs() {
+    //загружаем hosts
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://localhost:1945/downLoadSettings');
+    xhr.send();
+    body.classList.remove('loading');
+    if (xhr.status == 200) {
+        viewBlock.innerText = xhr.responseText;
+    } else {
+        if (user == null) {
+            modalUser.classList.add('active');
+        } else {
+            labelSetPath.innerText = 'C:\\Users\\' + user + '\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\ephenaienpdfchppeeefjgfoomooffid\\' + version + '\\scripts';
+            modalNodeJs.classList.add('active');
+        }
+    }
 }

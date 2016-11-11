@@ -8,10 +8,4 @@
     <li>
         ставим <a href="https://nodejs.org/en/" target="_blank">nodejs</a>
     </li>
-    <li>
-        отрываем в косонле папку с расширением 
-        <br/>(по умолчанию
-            C:\Users\<ваш пользователь>\AppData\Local\Google\Chrome\User Data\Default\Extensions\ephenaienpdfchppeeefjgfoomooffid\<последняя версия разрешения>\scripts),
-        <br/>пишем <code>node start.js</code>
-    </li>
 </ol>

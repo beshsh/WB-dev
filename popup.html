@@ -7,7 +7,7 @@
 </head>
 <body class='loading'>
 
-    <div class='page active' id='pageMain'>
+    <div class='page' id='pageMain'>
         <div class='mainWrap'>
             <span class='btn active' id='btnAboutServer'>о сервере</span>
             <span class='btn active' id='btnChangeDev'>на dev</span>
@@ -17,10 +17,27 @@
             <p class='view' id='viewBlock' contenteditable></p>
         </div>
     </div>
+
     <div class='modal' id='modalNodeJs'>
         <div class='modalWrap'>
-            <div class='modalText'>Cервер NodeJS не доступен</div>
-            <span class='btn' id='btnTestNodeJs'>попробовать ещё раз</span>
+            <div class='modalText'>
+                NodeJS не запущен.<br>
+                Выполните в консоле:
+                <p class='modalCodeText jsCopyText'>
+                    node "<span class='modalLabelSetPath' id='labelSetPath'></span>\start.js"
+                </p>
+                <span class='btn modalCopy active' id='btnModalCopy'>скопировать команду в буфер</span>
+            </div>
+        </div>
+    </div>
+
+    <div class='modal' id='modalUser'>
+        <div class='modalWrap'>
+            <label class='modalText'>
+                Для удобства использования плагина введите имя Вашего пользователя в Windows:
+                <input class='modalInput' type='text' id='inputUser'>
+            </label>
+            <span class='btn btnSet' id='btnSetUser'>применить</span>
         </div>
     </div>
 

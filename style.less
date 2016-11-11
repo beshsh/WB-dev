@@ -1,4 +1,5 @@
 //цвета
+@black: #000;
 @purply: #793aa6;
 @purplyHard: #682896;
 @white: #fff;
@@ -15,30 +16,15 @@ body {
     margin: 0;
     height: 500px;
     width: 400px;
-
-    &.loading {
-        background: url('images/loader.gif') center no-repeat;
-
-        * {
-            opacity: 0!important;
-        }
-    }
 }
 
 .page {
-    opacity: 0;
     height: 100%;
     left: 0;
     position: absolute;
     top: 0;
     transition: .5s opacity;
     width: 100%;
-    z-index: -99;
-
-    &.active {
-        opacity: 1;
-        z-index: 1;
-    }
 }
 .mainWrap {
     padding: 20px;
@@ -107,7 +93,6 @@ body {
     height: 100%;
     position: fixed;
     transition: .4s opacity, 0s z-index .5s;
-    -webkit-user-select: none;
     user-select: none;
     width: 100%;
     z-index: -99;
@@ -171,20 +156,45 @@ body {
         max-height: 100%;
         overflow: auto;
     }
+    .modalInput {
+        box-sizing: border-box;
+        margin: 10px 0;
+        height: 30px;
+        width: 100%;
+    }
     //ошибка nodejs
     &#modalNodeJs .modalWrap {
-        text-align: center;
+        margin: -85px 0 0 -180px;
+        padding: 20px 10px;
+        height: 120px;
+        width: 340px;
+
+        .modalText {
+            overflow: visible;
+        }
+        .modalCodeText {
+            background: @black;
+            color: @white;
+            display: block;
+            font-size: 10px;
+            height: 80px;
+            margin: 10px -10px;
+            padding: 8px;
+            overflow: auto;
+            user-select: initial;
+        }
+        .modalCopy {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
     }
     //////////ошибка nodejs
+
     //о сервере
     &#modalAbout .modalWrap {
-        background: @white;
         height: 400px;
-        left: 50%;
         margin: -220px 0 0 -155px;
-        padding: 20px 30px;
-        position: absolute;
-        top: 50%;
         width: 250px;
 
         .modalText > div {
@@ -193,6 +203,23 @@ body {
         }
     }
     //////////о сервере
+
+    //с именем пользователя
+    &#modalUser .modalWrap {
+        height: 105px;
+        margin: -100px 0 0 -135px;
+        position: relative;
+        width: 230px;
+
+        .btnSet {
+            cursor: pointer;
+            padding: 6px 9px;
+            position: absolute;
+            right: 31px;
+            top: 79px;
+        }
+    }
+    //////////с именем пользователя
 }
 //////////модальник
 
