@@ -36,7 +36,7 @@ btnAbout.addEventListener('click', function () {
             if (xhr.status != 200) {
                 modalAbout.getElementsByClassName('jsMessage')[0].innerText = "что-то пошло не так"
             } else {
-                modalAbout.getElementsByClassName('jsMessage')[0].innerText = xhr.responseText;
+                modalAbout.getElementsByClassName('jsMessage')[0].innerHTML = xhr.responseText;
             }
         };
     });
@@ -50,7 +50,6 @@ viewBlock.addEventListener('keydown', function () {
 //на дев
 btnChangeDev.addEventListener('click', function () {
     if (btnChangeDev.classList.contains('active')) {
-        viewBlock.classList.remove('aboutServer');
         viewBlock.innerText = delComments(viewBlock.innerText);
         btnSave.classList.add('active');
     }
@@ -59,7 +58,6 @@ btnChangeDev.addEventListener('click', function () {
 //на бой
 btnChangeBattle.addEventListener('click', function () {
     if (btnChangeBattle.classList.contains('active')) {
-        viewBlock.classList.remove('aboutServer');
         viewBlock.innerText = addComments(viewBlock.innerText);
         btnSave.classList.add('active');
     }
@@ -134,12 +132,12 @@ function changeStatus(text) {
 function delComments(input) {
     var i = 0,
         output = '',
-        regexp = /[0-9]/;
+        regexp = /[0-9\s]/;
 
     while (i < input.length){
         if (!(input[i] == '#')) {
             output = output + input[i];
-        } else if (!regexp.test(input[i+1])){  //регулярка чтобыпонять что идёт после комметария, вдруг обычный комментарий
+        } else if (!regexp.test(input[i+1])) {  //регулярка чтобыпонять что идёт после комметария, вдруг обычный комментарий
             output = output + input[i];
         }
         i++;
