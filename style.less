@@ -74,7 +74,6 @@ body {
     padding: 10px 15px;
     position: relative;
     opacity: .3;
-    -webkit-user-select: none;
     user-select: none;
 
     &.active {
@@ -86,6 +85,29 @@ body {
         }
     }
 }
+
+//кнопка смены пользователя windows
+.btnChangeUser {
+    &:before,
+    &:after {
+        content: '';
+        background: #fff;
+        border-radius: 100%;
+        height: 14px;
+        position: absolute;
+        top: 7px;
+        right: 13px;
+        width: 14px;
+    }
+    &:after {
+        border-radius: 8px;
+        height: 30px;
+        top: 20px;
+        right: 7px;
+        width: 26px;
+    }
+}
+//////////кнопка смены пользователя windows
 
 //модальник
 .modal {

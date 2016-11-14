@@ -20,24 +20,19 @@ filesystem.readFile('../settings.json', function(err, dataRead){
 });
 
 function onRequest(request, response) {
-
     switch (url.parse(request.url).pathname) {
         case '/downLoadSettings':
-            if (config.user == '') {
-                response.write('showModalUser');
-            } else {
-                response.writeHead(200, {"Content-Type": "text/plain"});
-                filesystem.readFile(config.hostst, function(err, dataRead){
-                    if (err) {
-                        response.write('error');
-                        response.end();
-                        throw err;
-                    } else {
-                        response.write(dataRead);
-                        response.end();
-                    }
-                });
-            }
+            response.writeHead(200, {"Content-Type": "text/plain"});
+            filesystem.readFile(config.hostst, function(err, dataRead){
+                if (err) {
+                    response.write('error');
+                    response.end();
+                    throw err;
+                } else {
+                    response.write(dataRead);
+                    response.end();
+                }
+            });
             break;
         case '/save':
             response.writeHead(200, {"Content-Type": "text/plain"});

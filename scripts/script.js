@@ -1,5 +1,5 @@
 var version = '1.2_0';
-var user = localStorage.getItem('setUser')
+var user = localStorage.getItem('setUser');
 
 var body = document.getElementsByTagName('body')[0],
     viewBlock = document.getElementById('viewBlock'),
@@ -15,9 +15,11 @@ var body = document.getElementsByTagName('body')[0],
     labelSetPath = document.getElementById('labelSetPath'),
     inputUser = document.getElementById('inputUser'),
     btnSetUser = document.getElementById('btnSetUser'),
-    btnModalCopy = document.getElementById('btnModalCopy');
+    btnModalCopy = document.getElementById('btnModalCopy'),
+    btnChangeUser = document.getElementById('btnChangeUser');
 
 document.addEventListener('DOMContentLoaded', function(){
+    inputUser.value = user;
     testNodeJs();
 });
 
@@ -114,6 +116,10 @@ btnModalCopy.addEventListener('click', function () {
     }
 });
 
+//смена пользователя windows
+btnChangeUser.addEventListener('click', function () {
+    modalUser.classList.add('active');
+});
 
 //-------------------------------------------функции попёрли------------------------------------------
 
@@ -174,17 +180,19 @@ function saveHosts(textMessage) {
 function testNodeJs() {
     //загружаем hosts
     var xhr = new XMLHttpRequest();
+    xhr.timeout = 1000;
     xhr.open('GET', 'http://localhost:1945/downLoadSettings');
     xhr.send();
-    body.classList.remove('loading');
-    if (xhr.status == 200) {
-        viewBlock.innerText = xhr.responseText;
-    } else {
-        if (user == null) {
-            modalUser.classList.add('active');
+    xhr.onreadystatechange = function () {
+        if (xhr.status == 200) {
+            viewBlock.innerText = xhr.responseText;
         } else {
-            labelSetPath.innerText = 'C:\\Users\\' + user + '\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\ephenaienpdfchppeeefjgfoomooffid\\' + version + '\\scripts';
-            modalNodeJs.classList.add('active');
+            if (user == null) {
+                modalUser.classList.add('active');
+            } else {
+                labelSetPath.innerText = 'C:\\Users\\' + user + '\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\ephenaienpdfchppeeefjgfoomooffid\\' + version + '\\scripts';
+                modalNodeJs.classList.add('active');
+            }
         }
-    }
+    };
 }
