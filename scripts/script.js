@@ -1,4 +1,4 @@
-var version = '1.2_0';
+var version = '1.3_0';
 var user = localStorage.getItem('setUser');
 
 var body = document.getElementsByTagName('body')[0],
@@ -150,11 +150,16 @@ function addComments(input) {
         output = '';
 
     while (i < input.length) {
-        if ((i == 0) && (input[i]!='\n')) {
-            output = output + '#';
-        }
-        if (input[i] == '\n') {
-            output = output + '\n#';
+        if ( input[i] != '#' ) {    //если это не коммент
+            console.log('1')
+            if ( (i == 0) && (input[i]!='\n') ) {   //если первый символ
+                output = output + '#';
+            }
+            if (( input[i] == '\n')  && (input[i+1]!='#') ) { //если начало строки но коммент не стоит
+                output = output + '\n#';
+            } else {
+                output = output + input[i];
+            }
         } else {
             output = output + input[i];
         }
