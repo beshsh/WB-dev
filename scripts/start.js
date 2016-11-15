@@ -1,11 +1,14 @@
 var http = require('http');
 var url = require('url');
 var filesystem = require('fs');
+var path = require('path');
 
 var config = {};
 
+var user = process.env['USERPROFILE'].split(path.sep)[2];
+
 //читаем настройки
-filesystem.readFile('../settings.json', function(err, dataRead){
+filesystem.readFile('C:\\Users\\'+ user + '\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\ephenaienpdfchppeeefjgfoomooffid\\1.2_0\\settings.json', function(err, dataRead){
     console.log('чтение настроек');
     if (err) {
         response.write('error');
@@ -16,7 +19,7 @@ filesystem.readFile('../settings.json', function(err, dataRead){
             if (key == 'urlHosts') config.hostst = value;
         });
     }
-    console.log('расширение готово к использованию');
+    console.log('расширение готово к использованию, для дальнейшей работы не прекращайте сеанс');
 });
 
 function onRequest(request, response) {
