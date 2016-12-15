@@ -1,12 +1,10 @@
-var version = '1.3_0';
+var version = '1.4_0';
 var user = localStorage.getItem('setUser');
 
 var body = document.getElementsByTagName('body')[0],
     viewBlock = document.getElementById('viewBlock'),
     btnAbout = document.getElementById('btnAboutServer'),
     modalNodeJs = document.getElementById('modalNodeJs'),
-    btnChangeDev = document.getElementById('btnChangeDev'),
-    btnChangeBattle = document.getElementById('btnChangeBattle'),
     btnSave = document.getElementById('btnSave'),
     labelStatus = document.getElementById('labelStatus'),
     modalAbout = document.getElementById('modalAbout'),
@@ -17,6 +15,8 @@ var body = document.getElementsByTagName('body')[0],
     btnSetUser = document.getElementById('btnSetUser'),
     btnModalCopy = document.getElementById('btnModalCopy'),
     btnChangeUser = document.getElementById('btnChangeUser');
+
+var arrHosts = []; //массив строк из hosts
 
 document.addEventListener('DOMContentLoaded', function(){
     inputUser.value = user;
@@ -47,30 +47,15 @@ viewBlock.addEventListener('keydown', function () {
     btnSave.classList.add('active');
 });
 
-//на дев
-btnChangeDev.addEventListener('click', function () {
-    if (btnChangeDev.classList.contains('active')) {
-        viewBlock.innerText = delComments(viewBlock.innerText);
-        btnSave.classList.add('active');
-    }
-});
-
-//на бой
-btnChangeBattle.addEventListener('click', function () {
-    if (btnChangeBattle.classList.contains('active')) {
-        viewBlock.innerText = addComments(viewBlock.innerText);
-        btnSave.classList.add('active');
-    }
-});
-
 //сохранить
 btnSave.addEventListener('click', function () {
     if (btnSave.classList.contains('active')) {
         saveHosts('сохранено');
         btnSave.classList.remove('active');
-        chrome.browsingData.removeCache({"since": 0}, function() {
+        chrome.browsingData.removeCache({'since': 0}, function() {
             chrome.tabs.getSelected(function(tab){
-                linkBlank.innerHTML = '<a href="' + tab.url + '" target="_blank">перейти</a>'
+                linkBlank.classList.add('active');
+                linkBlank.setAttribute('href' , tab.url );
             })
         });
     }
@@ -129,45 +114,6 @@ function changeStatus(text) {
     }, 1000);
 }
 
-function delComments(input) {
-    var i = 0,
-        output = '',
-        regexp = /[0-9\s]/;
-
-    while (i < input.length){
-        if (!(input[i] == '#')) {
-            output = output + input[i];
-        } else if (!regexp.test(input[i+1])) {  //регулярка чтобыпонять что идёт после комметария, вдруг обычный комментарий
-            output = output + input[i];
-        }
-        i++;
-    }
-    return output;
-}
-
-function addComments(input) {
-    var i = 0,
-        output = '';
-
-    while (i < input.length) {
-        if ( input[i] != '#' ) {    //если это не коммент
-            console.log('1')
-            if ( (i == 0) && (input[i]!='\n') ) {   //если первый символ
-                output = output + '#';
-            }
-            if (( input[i] == '\n')  && (input[i+1]!='#') ) { //если начало строки но коммент не стоит
-                output = output + '\n#';
-            } else {
-                output = output + input[i];
-            }
-        } else {
-            output = output + input[i];
-        }
-        i++;
-    }
-    return output;
-}
-
 function saveHosts(textMessage) {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', 'http://localhost:1945/save');
@@ -181,21 +127,99 @@ function saveHosts(textMessage) {
 }
 
 function testNodeJs() {
-    //загружаем hosts
     var xhr = new XMLHttpRequest();
     xhr.timeout = 1000;
     xhr.open('GET', 'http://localhost:1945/downLoadSettings');
     xhr.send();
     xhr.onreadystatechange = function () {
-        if (xhr.status == 200) {
-            viewBlock.innerText = xhr.responseText;
-        } else {
-            if (user == null) {
-                modalUser.classList.add('active');
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+                modalNodeJs.classList.remove('active');
+                fillArray(xhr.responseText);
+                fillDOM(arrHosts);
             } else {
-                labelSetPath.innerText = 'C:\\Users\\' + user + '\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\ephenaienpdfchppeeefjgfoomooffid\\' + version + '\\scripts';
-                modalNodeJs.classList.add('active');
+                if (user == null) {
+                    modalUser.classList.add('active');
+                } else {
+                    labelSetPath.innerText = 'C:\\Users\\' + user + '\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\ephenaienpdfchppeeefjgfoomooffid\\' + version + '\\scripts';
+                    modalNodeJs.classList.add('active');
+                }
             }
         }
     };
+}
+
+function fillDOM(arrayH) {
+    viewBlock.innerText = '';
+    for (var countLine = 0; countLine < arrayH.length; countLine++) {
+
+        if (!((arrayH[countLine] == '')&&(arrayH[countLine + 1] == ''))) {
+            var comment = '';
+            (/[#]/).test(arrayH[countLine]) ? comment = true : comment = false;
+            viewBlock.innerHTML = viewBlock.innerHTML +
+                '<span class="itemLineHosts" data-comment="' + comment + '" tabindex="' + countLine + '" >' +
+                    '<span class="jsHostsItem">' + arrayH[countLine] + '</span>' +
+                    '<button class="itemLineHostsEdit" title="редактировать"></button>' +
+                '</span>';
+        }
+    }
+
+    body.addEventListener('click', function (e) {
+        var currentEl = e.target;
+        if (e.target.classList.contains('itemLineHostsEdit')) {
+            e.stopPropagation();
+            var editLine = currentEl.parentNode,
+                range = document.createRange(),
+                sel = window.getSelection();
+            editLine.setAttribute('contenteditable', 'true');
+            range.setStart(editLine.getElementsByClassName('jsHostsItem')[0].firstChild, editLine.innerText.length);
+            range.collapse(true);
+            sel.removeAllRanges();
+            sel.addRange(range);
+            editLine.getElementsByClassName('jsHostsItem')[0].focus();
+            return;
+        }
+
+        var flagClickLineHosts = e.target.classList.contains('itemLineHosts'),
+            flagClickParentHosts = e.target.parentNode.classList.contains('itemLineHosts');
+
+        if (flagClickLineHosts || flagClickParentHosts) {
+            btnSave.classList.add('active');
+            flagClickLineHosts ? currentEl = e.target : currentEl = e.target.parentNode;
+            currentEl.setAttribute('contenteditable', 'false');
+            if (currentEl.getAttribute('data-comment') == 'true') {
+                currentEl.setAttribute('data-comment', 'false');
+                currentEl.innerHTML =
+                    '<span class="jsHostsItem">' + currentEl.innerText.slice(1) + '</span>' +
+                    '<button class="itemLineHostsEdit" title="редактировать"></button>'
+            } else {
+                currentEl.setAttribute('data-comment', 'true');
+                currentEl.innerHTML =
+                '<span class="jsHostsItem">#'+ currentEl.innerText + '</span>' +
+                '<button class="itemLineHostsEdit" title="редактировать"></button>'
+            }
+        }
+    });
+}
+
+function fillArray(stringH) {
+    for (var i = 0; i < stringH.length; i++) {
+        if (i == 0) { //первый символ
+            arrHosts.push(disconnectLineHosts(i, 0));
+        }
+        if (stringH[i] == '\n') {
+            arrHosts.push(disconnectLineHosts(i + 1, i + 1));
+        }
+    }
+    function disconnectLineHosts(countBegin, countEnd) {
+        for (countEnd; countEnd <= stringH.length; countEnd++) {
+            if (stringH[countEnd] == '\n') {
+                return stringH.slice(countBegin, countEnd);
+            }
+            if (countEnd == stringH.length) {   //последняя строчка
+                stringH = stringH.slice(countBegin, stringH.length);
+                return stringH;
+            }
+        }
+    }
 }

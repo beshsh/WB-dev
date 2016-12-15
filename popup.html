@@ -9,13 +9,11 @@
 
     <div class='page' id='pageMain'>
         <span class='btn active' id='btnAboutServer'>о сервере</span>
-        <span class='btn active' id='btnChangeDev'>на dev</span>
-        <span class='btn active' id='btnChangeBattle'>на бой</span>
         <span class='btn' id='btnSave'>сохранить</span>
         <span class='btn active btnChangeUser' id='btnChangeUser' title='изменить имя пользователя в Windows'>&</span>
-        <span class='linkBlank' id='linkBlank'></span>
+        <a class='linkBlank' id='linkBlank' target='_blank' href=''>перейти</a>
         <div class='mainWrap'>
-            <p class='view' id='viewBlock' contenteditable>NodeJS не запущен.</p>
+            <p class='view' id='viewBlock'>NodeJS не запущен.</p>
         </div>
     </div>
 
@@ -36,7 +34,7 @@
         <div class='modalWrap'>
             <label class='modalText'>
                 Для удобства использования плагина введите имя
-                <string class='modalWarningText'>Вашего пользователя в Windows:</string>
+                <span class='modalWarningText'>Вашего пользователя в Windows:</span>
                 <input class='modalInput' type='text' id='inputUser'>
             </label>
             <span class='btn btnSet' id='btnSetUser'>применить</span>
