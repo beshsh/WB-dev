@@ -9,7 +9,7 @@ var user = process.env['USERPROFILE'].split(path.sep)[2];
 
 
 //читаем настройки
-filesystem.readFile('C:\\Users\\'+ user + '\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\ephenaienpdfchppeeefjgfoomooffid\\1.3_0\\settings.json', function(err, dataRead){
+filesystem.readFile('C:\\Users\\'+ user + '\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\ephenaienpdfchppeeefjgfoomooffid\\1.6_0\\settings.json', function(err, dataRead){
     console.log('чтение настроек');
     if (err) {
         response.write('error');

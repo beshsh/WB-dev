@@ -3,7 +3,7 @@
 
   "name": "WB dev",
   "description": "плагин для вёрстки и тестирования проекта wildberries",
-  "version": "1.4",
+  "version": "1.6",
 
   "permissions": [ "tabs", "<all_urls>", "activeTab", "fileSystem", "browsingData"],
 

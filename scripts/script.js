@@ -1,4 +1,4 @@
-var version = '1.4_0';
+var version = '1.6_0';
 var user = localStorage.getItem('setUser');
 
 var body = document.getElementsByTagName('body')[0],
@@ -44,6 +44,7 @@ btnAbout.addEventListener('click', function () {
 
 //изменения в viewBlock
 viewBlock.addEventListener('keydown', function () {
+    console.log('1');
     btnSave.classList.add('active');
 });
 
@@ -158,7 +159,8 @@ function fillDOM(arrayH) {
             (/[#]/).test(arrayH[countLine]) ? comment = true : comment = false;
             viewBlock.innerHTML = viewBlock.innerHTML +
                 '<span class="itemLineHosts" data-comment="' + comment + '" tabindex="' + countLine + '" >' +
-                    '<span class="jsHostsItem">' + arrayH[countLine] + '</span>' +
+                    '<span class="btnDeleteItem jsBtnDeleteLine" title="удалить"></span>' +
+                    '<span class="labelHost jsHostsItem">' + arrayH[countLine] + '</span>' +
                     '<button class="itemLineHostsEdit" title="редактировать"></button>' +
                 '</span>';
         }
@@ -180,6 +182,14 @@ function fillDOM(arrayH) {
             return;
         }
 
+        if (e.target.classList.contains('jsBtnDeleteLine')) {
+            e.stopPropagation();
+            var editLine = currentEl.parentNode;
+            editLine.remove();
+            btnSave.classList.add('active');
+           return;
+        }
+
         var flagClickLineHosts = e.target.classList.contains('itemLineHosts'),
             flagClickParentHosts = e.target.parentNode.classList.contains('itemLineHosts');
 
@@ -190,12 +200,14 @@ function fillDOM(arrayH) {
             if (currentEl.getAttribute('data-comment') == 'true') {
                 currentEl.setAttribute('data-comment', 'false');
                 currentEl.innerHTML =
-                    '<span class="jsHostsItem">' + currentEl.innerText.slice(1) + '</span>' +
+                    '<span class="btnDeleteItem jsBtnDeleteLine" title="удалить"></span>' +
+                    '<span class="labelHost jsHostsItem">' + currentEl.innerText.slice(1) + '</span>' +
                     '<button class="itemLineHostsEdit" title="редактировать"></button>'
             } else {
                 currentEl.setAttribute('data-comment', 'true');
                 currentEl.innerHTML =
-                '<span class="jsHostsItem">#'+ currentEl.innerText + '</span>' +
+                '<span class="btnDeleteItem jsBtnDeleteLine" title="удалить"></span>' +
+                '<span class="labelHost jsHostsItem">#'+ currentEl.innerText + '</span>' +
                 '<button class="itemLineHostsEdit" title="редактировать"></button>'
             }
         }
